@@ -15,6 +15,7 @@ gem 'pg', '~> 0.20.0'
 gem 'puma', '~> 3.0'
 gem 'rspec-rails', '~> 3.5.2'
 gem 'sass-rails', '~> 5.0'
+gem 'semantic-ui-sass', '~> 2.1.8.0'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -33,6 +34,7 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'pry'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
