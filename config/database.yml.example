@@ -1,0 +1,25 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: the_muse_on_rails_development
+  username: ENTER_USERNAME_HERE
+  password: ENTER_PASSWORD_HERE
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: the_muse_on_rails_test
+  username: ENTER_USERNAME_HERE
+  password: ENTER_PASSWORD_HERE
+
+production:
+  <<: *default
+  database: the_muse_on_rails_production
+  username: ENTER_USERNAME_HERE
+  password: ENTER_PASSWORD_HERE
