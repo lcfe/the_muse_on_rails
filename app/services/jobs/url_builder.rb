@@ -9,7 +9,8 @@ module Jobs
     def build
       query_params = [
         page_param,
-        level_params
+        level_params,
+        category_params
       ].flatten.join('&')
       query_params = "?#{query_params}" unless query_params.blank?
 
@@ -25,19 +26,26 @@ module Jobs
     end
 
     private def level_params
-      jobs_query.levels.map do |level|
-        "level=#{format_param_value(level)}"
-      end
+      convert_array_to_params(jobs_query.levels, 'level')
+    end
+
+    private def category_params
+      convert_array_to_params(jobs_query.categories, 'category')
     end
 
     private def company_params
-      jobs_query.companies.map do |company|
-        "company=#{format_param_value(company)}"
+      convert_array_to_params(jobs_query.companies, 'company')
+    end
+
+    private def convert_array_to_params(array, param_key)
+      array.map do |element|
+        "#{param_key}=#{format_param_value(element)}"
       end
     end
 
     private def format_param_value(value)
       value.gsub(' ', '+')
+        .gsub('&', '%26')
     end
   end
 end

@@ -1,10 +1,12 @@
 class JobsQuery
-  attr_reader :page_number, :companies, :levels
+  attr_reader :params, :page_number, :companies, :levels, :categories
 
   def initialize(params = {})
+    @params = params
     @page_number = params.fetch('page_number', default_page_number)
-    @companies = params.fetch('companies', []).reject(&:blank?)
-    @levels = params.fetch('levels', []).reject(&:blank?)
+    @companies = extract_array_from_params('companies')
+    @levels = extract_array_from_params('levels')
+    @categories = extract_array_from_params('categories')
   end
 
   # This method is needed to conform with the API that Rails' form_for helper
@@ -20,5 +22,9 @@ class JobsQuery
 
   private def default_page_number
     1
+  end
+
+  private def extract_array_from_params(key)
+    params.fetch(key, []).reject(&:blank?)
   end
 end

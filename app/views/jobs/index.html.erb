@@ -2,13 +2,15 @@
 
 <div class="ui segment">
   <%= form_for @jobs_query, url: jobs_path do |f| %>
-    <%= f.label :companies, "Company" %>
-    <%= f.select :companies, [], {}, multiple: true %>
+    <%#= f.label :companies, "Company" %>
+    <%#= f.select :companies, [], {}, multiple: true %>
 
 
     <%= f.label :levels, "Level" %>
-    <%= f.select :levels, level_options, {}, multiple: true %>
+    <%= f.select :levels, level_options(@jobs_query.levels), {}, multiple: true %>
 
+    <%= f.label :categories, "Category" %>
+    <%= f.select :categories, category_options(@jobs_query.categories), {}, multiple: true %>
 
     <%= f.submit "Search" %>
   <% end %>
@@ -20,6 +22,7 @@
       <th>Name</th>
       <th>Company</th>
       <th>Levels</th>
+      <th>Categories</th>
     </tr>
   </thead>
   <% @query_response.results.each do |result| %>
@@ -32,6 +35,9 @@
       </td>
       <td>
         <%= result['levels'].map { |level| level['name'] }.join(', ') %>
+      </td>
+      <td>
+        <%= result['categories'].map { |category| category['name'] }.join(', ') %>
       </td>
     </tr>
   <% end %>
