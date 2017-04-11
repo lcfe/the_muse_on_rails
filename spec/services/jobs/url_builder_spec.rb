@@ -20,7 +20,7 @@ describe Jobs::UrlBuilder do
         )
       end
       it 'returns the correct url' do
-        expected_url = 'https://api-v2.themuse.com/jobs?page=5'
+        expected_url = 'https://api-v2.themuse.com/jobs?page=4'
         expect(subject.build).to eql expected_url
       end
     end
@@ -32,7 +32,7 @@ describe Jobs::UrlBuilder do
         )
       end
       it 'returns the correct url' do
-        expected_url = 'https://api-v2.themuse.com/jobs?page=1&level=Level+Uno&level=Level+Dos&level=LevelWithNoSpaces'
+        expected_url = 'https://api-v2.themuse.com/jobs?page=0&level=Level+Uno&level=Level+Dos&level=LevelWithNoSpaces'
         expect(subject.build).to eql expected_url
       end
     end

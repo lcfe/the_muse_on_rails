@@ -3,7 +3,7 @@ class JobsQuery
 
   def initialize(params = {})
     @params = params
-    @page_number = params.fetch('page_number', default_page_number)
+    @page_number = extract_page_number_from_params
     @companies = extract_array_from_params('companies')
     @levels = extract_array_from_params('levels')
     @categories = extract_array_from_params('categories')
@@ -18,6 +18,13 @@ class JobsQuery
   # This method is needed to conform with the API that Rails' form_for helper
   # method expects.
   def to_key
+  end
+
+  private def extract_page_number_from_params
+    page_number = params['page_number']
+    page_number = default_page_number if page_number.blank?
+
+    page_number
   end
 
   private def default_page_number

@@ -21,8 +21,11 @@ module Jobs
       'https://api-v2.themuse.com/jobs'
     end
 
+    # It seems that TheMuse's API uses a 0-based index for page numbers, so the
+    # first page is page 0. Therefore, we offset the user-specified page number
+    # by 1 to account for the 0-based indexing assumed by TheMuse's API.
     private def page_param
-      "page=#{jobs_query.page_number}"
+      "page=#{jobs_query.page_number.to_i - 1}"
     end
 
     private def level_params
