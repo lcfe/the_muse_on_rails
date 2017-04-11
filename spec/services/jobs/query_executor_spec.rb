@@ -30,7 +30,7 @@ describe Jobs::QueryExecutor do
     '200'
   end
   let(:body) do
-    ''
+    { fake: 'data' }.to_json
   end
   let(:returned_object) do
     subject.execute
@@ -68,7 +68,7 @@ describe Jobs::QueryExecutor do
           page_count: page_count,
           total: total,
           results: results,
-          status: code
+          code: code
         }.to_json
       end
 
@@ -95,6 +95,15 @@ describe Jobs::QueryExecutor do
       let(:code) do
         '404'
       end
+      let(:error) do
+        'Something went wrong'
+      end
+      let(:body) do
+        {
+          code: code,
+          error: error
+        }.to_json
+      end
 
       describe 'returned object' do
         it 'responds to #page with 0' do
@@ -111,6 +120,9 @@ describe Jobs::QueryExecutor do
         end
         it 'responds to #status with the response code' do
           expect(returned_object.status).to eql code
+        end
+        it 'responds to #error with the error from the JSON response' do
+          expect(returned_object.error).to eql error
         end
       end
     end

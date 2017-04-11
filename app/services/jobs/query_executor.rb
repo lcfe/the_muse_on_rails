@@ -7,18 +7,17 @@ module Jobs
 
     def execute
       response = api_requester.send_request(url)
+      data = JSON.parse(response.body)
       if response.code.to_s == '200'
-        data = JSON.parse(response.body)
-          .merge({ status: response.code })
-        OpenStruct.new(data)
+        OpenStruct.new(data.merge(status: response.code))
       else
-        OpenStruct.new({
+        OpenStruct.new(data.merge(
           page: 0,
           page_count: 0,
           total: 0,
           results: [],
           status: response.code
-        })
+        ))
       end
     end
 

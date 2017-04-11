@@ -1,44 +1,66 @@
 <h1>Jobs</h1>
 
 <div class="ui segment">
-  <%= form_for @jobs_query, url: jobs_path do |f| %>
+  <%= form_for @jobs_query, url: jobs_path, html: { class: "ui form" } do |f| %>
     <%#= f.label :companies, "Company" %>
     <%#= f.select :companies, [], {}, multiple: true %>
 
+    <div class="fields">
+      <div class="field">
+        <%= f.label :levels, "Level" %>
+        <%= f.select :levels, level_options(@jobs_query.levels), {}, multiple: true, class: "ui dropdown" %>
+      </div>
 
-    <%= f.label :levels, "Level" %>
-    <%= f.select :levels, level_options(@jobs_query.levels), {}, multiple: true %>
+      <div class="field">
+        <%= f.label :categories, "Category" %>
+        <%= f.select :categories, category_options(@jobs_query.categories), {}, multiple: true, class: "ui dropdown" %>
+      </div>
 
-    <%= f.label :categories, "Category" %>
-    <%= f.select :categories, category_options(@jobs_query.categories), {}, multiple: true %>
-
-    <%= f.submit "Search" %>
+      <div class="field">
+        <%= f.label :page_number, 'Page' %>
+        <%= f.number_field :page_number, min: 1, step: 1 %>
+      </div>
+    </div>
+    <%= f.submit "Search", class: "ui button" %>
   <% end %>
 </div>
 
-<table class="ui table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Company</th>
-      <th>Levels</th>
-      <th>Categories</th>
-    </tr>
-  </thead>
-  <% @query_response.results.each do |result| %>
-    <tr>
-      <td>
-        <%= result['name'] %>
-      </td>
-      <td>
-        <%= result['company']['name'] %>
-      </td>
-      <td>
-        <%= result['levels'].map { |level| level['name'] }.join(', ') %>
-      </td>
-      <td>
-        <%= result['categories'].map { |category| category['name'] }.join(', ') %>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<% if @query_response.results.any? %>
+  <div>Showing page <%= @query_response.page + 1%> of <%= @query_response.page_count %>.</div>
+
+  <table class="ui table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Levels</th>
+        <th>Categories</th>
+      </tr>
+    </thead>
+    <!-- TODO: Implement a ResultPresenter that encapsulates presentational
+      logic for converting the json result data into the text to be rendered.
+    -->
+    <% @query_response.results.each do |result| %>
+      <tr>
+        <td>
+          <%= result['name'] %>
+        </td>
+        <td>
+          <%= result['company']['name'] %>
+        </td>
+        <td>
+          <%= result['levels'].map { |level| level['name'] }.join(', ') %>
+        </td>
+        <td>
+          <%= result['categories'].map { |category| category['name'] }.join(', ') %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <div class="ui negative message">
+    <i class="warning sign icon"></i>
+    An error has occurred and the search results could not be retrieved:
+    <%= @query_response.error %>
+  </div>
+<% end %>
